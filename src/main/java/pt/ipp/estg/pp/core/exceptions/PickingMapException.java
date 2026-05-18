@@ -1,4 +1,4 @@
-package main.java.pt.ipp.estg.pp.core.exceptions;
+package pt.ipp.estg.pp.core.exceptions;
 
 public class PickingMapException {
 

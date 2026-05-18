@@ -1,4 +1,4 @@
-package main.java.pt.ipp.estg.pp.core;
+package pt.ipp.estg.pp.core;
 
 public interface Institution {
 

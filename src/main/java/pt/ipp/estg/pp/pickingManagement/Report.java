@@ -1,4 +1,4 @@
-package main.java.pt.ipp.estg.pp.pickingManagement;
+package pt.ipp.estg.pp.pickingManagement;
 
 public class Report {
 

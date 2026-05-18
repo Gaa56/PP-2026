@@ -1,4 +1,4 @@
-package main.java.pt.ipp.estg.pp.pickingManagement.exceptions;
+package pt.ipp.estg.pp.pickingManagement.exceptions;
 
 public class RouteException {
 

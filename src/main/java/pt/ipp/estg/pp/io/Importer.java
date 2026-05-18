@@ -1,4 +1,4 @@
-package main.java.pt.ipp.estg.pp.io;
+package pt.ipp.estg.pp.io;
 
 public interface Importer {
 
