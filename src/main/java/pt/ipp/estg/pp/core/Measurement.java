@@ -1,5 +1,9 @@
 package pt.ipp.estg.pp.core;
 
-public interface Measurement {
+import java.time.LocalDateTime;
 
+public interface Measurement {
+   LocalDateTime getDate();
+
+   double getValue()
 }
