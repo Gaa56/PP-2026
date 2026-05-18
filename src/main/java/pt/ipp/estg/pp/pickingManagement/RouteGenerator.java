@@ -1,5 +1,7 @@
 package pt.ipp.estg.pp.pickingManagement;
 
-public interface RouteGenerator {
+import pt.ipp.estg.pp.core.Institution;
 
+public interface RouteGenerator {
+    Route[] generateRoutes(Institution institution, Strategy strategy, RouteValidator routeValidator, Report report);
 }

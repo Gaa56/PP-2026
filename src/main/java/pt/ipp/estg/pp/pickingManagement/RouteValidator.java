@@ -1,5 +1,7 @@
 package pt.ipp.estg.pp.pickingManagement;
 
-public class RouteValidator {
+import pt.ipp.estg.pp.core.AidBox;
 
+public interface RouteValidator {
+    boolean validate(Route route, AidBox aidBox);
 }
