@@ -5,5 +5,5 @@ import java.time.LocalDateTime;
 public interface Measurement {
    LocalDateTime getDate();
 
-   double getValue()
+   double getValue();
 }
