@@ -4,4 +4,5 @@ public interface GeographicCoordinates {
     double getLatitude();
 
     double getLongitude();
+
 }
