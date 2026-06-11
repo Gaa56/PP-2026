@@ -1,21 +1,21 @@
 package pt.ipp.estg.pp.core;
 
-public interface AidBox {
-    boolean addContainer(Container container);
+public interface AidBox extends Cloneable{
+    public boolean addContainer(Container container);
 
-    String getCode();
+    public String getCode();
     
-    Container getContainer(ItemType itemType);
+    public Container getContainer(ItemType itemType);
 
-    Container[] getContainers();
+    public Container[] getContainers();
 
-    GeographicCoordinates getCoordinates();
+    public GeographicCoordinates getCoordinates();
 
-    double getDistance(AidBox aidBox);
+    public double getDistance(AidBox aidBox);
 
-    double getDuration(AidBox aidBox);
+    public double getDuration(AidBox aidBox);
 
-    String getRefLocal();
+    public String getRefLocal();
 
-    String getZone();
+    public String getZone();
 }
