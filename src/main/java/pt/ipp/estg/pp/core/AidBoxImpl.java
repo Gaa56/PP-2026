@@ -16,7 +16,6 @@ public class AidBoxImpl implements AidBox {
     private String zone;
     private int containerCount;
 
-    // Arrays para guardar as ligações a outras caixas (substituindo a fórmula de Haversine)
     private AidBox[] connectedBoxes;
     private double[] distances;
     private double[] durations;
