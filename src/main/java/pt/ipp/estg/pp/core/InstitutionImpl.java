@@ -67,6 +67,7 @@ public class InstitutionImpl implements Institution {
             aidBoxes = newAidBoxes;
         }        
 
+        //Adicionar ao array
         aidBoxes[numOfAidBoxes] = arg0;
         numOfAidBoxes++;
         return true;
@@ -125,6 +126,7 @@ public class InstitutionImpl implements Institution {
             pickingMaps = newPickingMaps;
         }
 
+        //Adicionar ao array
         pickingMaps[numOfPickingMaps] = arg0;
         numOfPickingMaps++;
         return true;
@@ -152,6 +154,7 @@ public class InstitutionImpl implements Institution {
             vehicles = newVehicles;
         }
 
+        //Adicionar ao array
         vehicles[numOfVehicles] = arg0;
         numOfVehicles++;
         return true;
@@ -159,15 +162,64 @@ public class InstitutionImpl implements Institution {
 
     @Override
     public void disableVehicle(Vehicle arg0) throws VehicleException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'disableVehicle'");
+        if(arg0 == null){
+            throw new VehicleException("Veiculo nao pode ser nulo");
+        }
+
+        //Procurar o veículo
+        //Variavel temporaria
+        VehicleImpl temp = null;
+        for(int i = 0; i < numOfVehicles; i++){
+            if(vehicles[i].equals(arg0)){
+                temp = (VehicleImpl) vehicles[i];
+                break;
+            }
+        }
+       
+        //Se for null é pk nao existe na instituição
+        if(temp == null) {
+            throw new VehicleException("Veiculo nao existe na instituicao");
+        }
+
+        //Verificar se está desativado
+        if(temp.getState() == State.DISABLED){
+            throw new VehicleException("Veiculo ja esta desativado");
+        }
+        
+        //Desativar
+        temp.setStateDisable();
     }
 
-    @Override
+        @Override
     public void enableVehicle(Vehicle arg0) throws VehicleException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'enableVehicle'");
+        if(arg0 == null){
+            throw new VehicleException("Veiculo nao pode ser nulo");
+        }
+   
+        //Procurar o veículo
+        //Variavel temporaria
+        VehicleImpl temp = null;
+        for(int i = 0; i < numOfVehicles; i++){
+            if(vehicles[i].equals(arg0)){
+                temp = (VehicleImpl) vehicles[i];
+                break;
+            }
+        }
+
+        //Se for null é pk nao existe na instituição
+        if(temp == null) {
+            throw new VehicleException("Veiculo nao existe na instituicao");
+        }
+
+        //Verificar se está ativo
+        if(temp.getState() == State.ACTIVE){
+            throw new VehicleException("Veiculo ja esta ativo");
+        }
+
+        //Ativar
+        temp.setStateActive();
     }
+
 
     @Override
     public AidBox[] getAidBoxes() {
