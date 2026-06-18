@@ -17,28 +17,144 @@ import com.estg.pickingManagement.Vehicle;
 
 public class InstitutionImpl implements Institution {
 
+
+    private String name;
+      
+
+    private Vehicle[] vehicles;
+    private int numOfVehicles;
+    
+    private AidBox[] aidBoxes;
+    private int numOfAidBoxes;
+
+    private PickingMap[] pickingMaps;
+    private int numOfPickingMaps;
+
+    private static final int DEFAULT_SIZE = 20;
+ 
+
+    public InstitutionImpl(String name) {
+        this.name = name;
+        this.vehicles = new Vehicle[DEFAULT_SIZE];
+        this.aidBoxes = new AidBox[DEFAULT_SIZE];
+        this.pickingMaps = new PickingMap[DEFAULT_SIZE];
+        this.numOfVehicles = 0;
+        this.numOfAidBoxes = 0;
+        this.numOfPickingMaps = 0;
+    }´
+
     @Override
     public boolean addAidBox(AidBox arg0) throws AidBoxException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addAidBox'");
+        if(arg0 == null){
+           throw new AidBoxException("AidBox não pode ser nula");
+        }
+
+        //Verificar se a aidbox ja existe pelo código
+        for(int i = 0; i < numOfAidBoxes;i++){
+            if(aidBoxes[i].getCode().equals(arg0.getCode())){
+                return false;
+            }
+        }
+
+        //Expandir o array
+        if(numOfAidBoxes == aidBoxes.length){
+            AidBox[] newAidBoxes = new AidBox[aidBoxes.length * 2];
+            //Passar as aidBoxes para o novo array
+            for(int i = 0;i < aidBoxes.length;i++ ){
+                newAidBoxes[i] = aidBoxes[i];
+            }
+            //Atualizar a variável aidBoxes com o novo array
+            aidBoxes = newAidBoxes;
+        }        
+
+        aidBoxes[numOfAidBoxes] = arg0;
+        numOfAidBoxes++;
+        return true;
+        
     }
 
     @Override
     public boolean addMeasurement(Measurement arg0, Container arg1) throws ContainerException, MeasurementException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addMeasurement'");
+        if(arg0 == null || arg1 == null){
+           throw new ContainerException("Container ou Measurement não pode ser nulo");
+        }
+
+        //Verificar se o container existe na aidbox
+        boolean containerExists = false;
+        for(int i = 0; i < numOfAidBoxes;i++){
+            if(aidBoxes[i].getContainers() != null){
+                for(int j = 0; j < aidBoxes[i].getContainers().length;j++){
+                    if(aidBoxes[i].getContainers()[j].equals(arg1)){
+                        containerExists = true;
+                        break;
+                    }
+                }
+            }
+            if(containerExists){
+                break;
+            }
+        }
+
+        //Se a variavel containerExists ainda for falso, é pk nao existe
+        if(!containerExists){
+           throw new ContainerException("Container não existe");
+        }
+
+        return arg1.addMeasurement(arg0);
     }
 
     @Override
     public boolean addPickingMap(PickingMap arg0) throws PickingMapException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addPickingMap'");
+        if(arg0 == null){
+           throw new PickingMapException("PickingMap não pode ser nulo");
+        }
+
+        //Verificar se o pickingmap ja existe pelo código
+        for(int i = 0; i < numOfPickingMaps;i++){
+            if(pickingMaps[i].equals(arg0)){
+                return false;
+            }
+        }
+
+        //Expandir o array
+        if(numOfPickingMaps == pickingMaps.length){
+            PickingMap[] newPickingMaps = new PickingMap[pickingMaps.length * 2];
+            for(int i = 0;i < pickingMaps.length;i++){
+                newPickingMaps[i] = pickingMaps[i];
+            }
+            pickingMaps = newPickingMaps;
+        }
+
+        pickingMaps[numOfPickingMaps] = arg0;
+        numOfPickingMaps++;
+        return true;
     }
 
     @Override
     public boolean addVehicle(Vehicle arg0) throws VehicleException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addVehicle'");
+        if(arg0 == null){
+            throw new VehicleException("Veiculo nao pode ser nulo");
+        }
+
+        //Verificar se o veiculo ja existe
+        for(int i = 0; i < numOfVehicles;i++){
+            if(vehicles[i].equals(arg0)){
+                return false;
+            }
+        }
+
+        //Expandir o array
+        if(numOfVehicles == vehicles.length){
+            Vehicle[] newVehicles = new Vehicle[DEFAULT_SIZE * 2];
+            for(int i = 0; i < vehicles.length;i++){
+                newVehicles[i] = vehicles[i];
+            }
+            vehicles = newVehicles;
+        }
+
+        vehicles[numOfVehicles] = arg0;
+        numOfVehicles++;
+        return true;
     }
 
     @Override
