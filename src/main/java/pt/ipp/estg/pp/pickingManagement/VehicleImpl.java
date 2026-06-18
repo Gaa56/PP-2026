@@ -7,10 +7,13 @@ public class VehicleImpl implements Vehicle {
 
     private double maxCapacity;
     private ItemType supplyType;
+    private State state;
+     
 
-    public VehicleImpl(double maxCapacity, ItemType supplyType) {
+    public VehicleImpl(double maxCapacity, ItemType supplyType, State state) {
         this.maxCapacity = maxCapacity;
         this.supplyType = supplyType;
+        this.state = State.ACTIVE;
     }
 
     @Override
@@ -22,6 +25,21 @@ public class VehicleImpl implements Vehicle {
     public ItemType getSupplyType() {
         return this.supplyType;
     }
+
+//Para o estado
+    public State getState(){
+        return this.state;
+    }
+
+    public void setStateDisable(State state){
+        this.state = State.DISABLED;
+    }
+
+    public void setStateActive(State state){
+        this.state = State.ACTIVE;
+    }
+
+    
   
    @Override
     public boolean equals(Object obj) {
