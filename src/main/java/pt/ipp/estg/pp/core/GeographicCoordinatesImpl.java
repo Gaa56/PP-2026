@@ -3,7 +3,8 @@ package pt.ipp.estg.pp.core;
 import com.estg.core.GeographicCoordinates;
 
 /**
- * Representa as coordenadas geográficas (latitude e longitude) de uma localização.
+ * Representa as coordenadas geográficas (latitude e longitude) de uma
+ * localização.
  */
 public class GeographicCoordinatesImpl implements GeographicCoordinates {
 
@@ -11,18 +12,13 @@ public class GeographicCoordinatesImpl implements GeographicCoordinates {
     private final double longitude;
 
     /**
-     * Cria uma coordenada padrão na origem (0.0, 0.0).
-     */
-    public GeographicCoordinatesImpl() {
-        this(0.0, 0.0);
-    }
-
-    /**
-     * Cria uma coordenada geográfica e valida se os valores estão dentro dos limites.
+     * Cria uma coordenada geográfica e valida se os valores estão dentro dos
+     * limites.
      *
      * @param latitude  latitude em graus (deve estar entre -90 e 90)
      * @param longitude longitude em graus (deve estar entre -180 e 180)
-     * @throws IllegalArgumentException se os valores estiverem fora dos limites válidos
+     * @throws IllegalArgumentException se os valores estiverem fora dos limites
+     *                                  válidos
      */
     public GeographicCoordinatesImpl(double latitude, double longitude) {
         if (latitude < -90.0 || latitude > 90.0) {
@@ -64,7 +60,7 @@ public class GeographicCoordinatesImpl implements GeographicCoordinates {
         }
         GeographicCoordinatesImpl other = (GeographicCoordinatesImpl) obj;
         return Double.compare(this.latitude, other.latitude) == 0 &&
-               Double.compare(this.longitude, other.longitude) == 0;
+                Double.compare(this.longitude, other.longitude) == 0;
     }
 
     /**
@@ -73,13 +69,13 @@ public class GeographicCoordinatesImpl implements GeographicCoordinates {
     @Override
     public int hashCode() {
         int result = 17;
-        
+
         long latBits = Double.doubleToLongBits(this.latitude);
         result = 31 * result + (int) (latBits ^ (latBits >>> 32));
-        
+
         long lonBits = Double.doubleToLongBits(this.longitude);
         result = 31 * result + (int) (lonBits ^ (lonBits >>> 32));
-        
+
         return result;
     }
 

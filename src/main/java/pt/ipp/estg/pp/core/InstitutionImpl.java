@@ -1,8 +1,10 @@
 package pt.ipp.estg.pp.core;
 
-import com.estg.core.Institution;
+import java.time.LocalDateTime;
+
 import com.estg.core.AidBox;
 import com.estg.core.Container;
+import com.estg.core.Institution;
 import com.estg.core.ItemType;
 import com.estg.core.Measurement;
 import com.estg.core.exceptions.AidBoxException;
@@ -12,7 +14,6 @@ import com.estg.core.exceptions.PickingMapException;
 import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
-import java.time.LocalDateTime;
 
 public class InstitutionImpl implements Institution {
 
