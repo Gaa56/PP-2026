@@ -13,5 +13,6 @@
     "editor.suggestOnTriggerCharacters": false,
     "editor.acceptSuggestionOnEnter": "off",
     "editor.wordBasedSuggestions": "off",
-    "java.completion.enabled": false
+    "java.completion.enabled": false,
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
