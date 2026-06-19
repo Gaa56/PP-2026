@@ -239,12 +239,13 @@ public class AidBoxImpl implements AidBox {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
         sb.append("AidBoxImpl{")
-                .append("code='" + code + '\'')
-                .append(", zone='" + zone + '\'')
-                .append(", refLocal='" + refLocal + '\'')
-                .append(", containerCount=" + containerCount)
-                .append(", coordinates=" + coordinates)
+                .append("code: '").append(code).append('\'')
+                .append(", zone: '").append(zone).append('\'')
+                .append(", refLocal: '").append(refLocal).append('\'')
+                .append(", containerCount: ").append(containerCount)
+                .append(", coordinates: ").append(coordinates)
                 .append("}");
         return sb.toString();
     }
