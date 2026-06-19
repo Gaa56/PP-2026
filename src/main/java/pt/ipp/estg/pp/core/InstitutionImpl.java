@@ -15,6 +15,8 @@ import com.estg.core.exceptions.VehicleException;
 import com.estg.pickingManagement.PickingMap;
 import com.estg.pickingManagement.Vehicle;
 
+import pt.ipp.estg.pp.pickingManagement.VehicleImpl;
+
 public class InstitutionImpl implements Institution {
 
 
@@ -41,7 +43,7 @@ public class InstitutionImpl implements Institution {
         this.numOfVehicles = 0;
         this.numOfAidBoxes = 0;
         this.numOfPickingMaps = 0;
-    }´
+    }
 
     @Override
     public boolean addAidBox(AidBox arg0) throws AidBoxException {
