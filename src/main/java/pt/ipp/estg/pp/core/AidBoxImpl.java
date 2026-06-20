@@ -289,4 +289,27 @@ public class AidBoxImpl implements AidBox {
 
         return clone;
     }
+
+    /**
+     * Compara se esta AidBox é igual a outro objeto baseado no seu código.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof AidBox)) {
+            return false;
+        }
+        AidBox other = (AidBox) obj;
+        return this.code != null && this.code.equalsIgnoreCase(other.getCode());
+    }
+
+    /**
+     * Gera o código hash baseado no código da AidBox.
+     */
+    @Override
+    public int hashCode() {
+        return this.code != null ? this.code.toLowerCase().hashCode() : 0;
+    }
 }

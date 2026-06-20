@@ -43,11 +43,7 @@ public class ContainerImpl implements Container {
      * @param type O tipo de itens que o contentor suporta.
      */
     public ContainerImpl(String code, ItemType type) {
-        this.capacity = 100.0;
-        this.code = code;
-        this.type = type;
-        this.measurements = new Measurement[100];
-        this.measurementCount = 0;
+        this(100.0, code, type);
     }
 
     /**
@@ -199,5 +195,28 @@ public class ContainerImpl implements Container {
           .append(", Total de Medições: ").append(this.measurementCount)
           .append("]");
         return sb.toString();
+    }
+
+    /**
+     * Compara se este contentor é igual a outro objeto baseado no seu código.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || !(obj instanceof Container)) {
+            return false;
+        }
+        Container other = (Container) obj;
+        return this.code != null && this.code.equalsIgnoreCase(other.getCode());
+    }
+
+    /**
+     * Gera o código hash baseado no código do contentor.
+     */
+    @Override
+    public int hashCode() {
+        return this.code != null ? this.code.toLowerCase().hashCode() : 0;
     }
 }
