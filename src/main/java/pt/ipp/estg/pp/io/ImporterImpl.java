@@ -47,7 +47,7 @@ public class ImporterImpl implements Importer {
      * Construtor por omissão. Assume os ficheiros no diretório raiz do projeto.
      */
     public ImporterImpl() {
-        this("aidboxes.json", "distances.json");
+        this("Aidboxes.json", "Distances.json");
     }
 
     @Override
