@@ -17,6 +17,7 @@ import pt.ipp.estg.pp.core.InstitutionImpl;
 import pt.ipp.estg.pp.core.AidBoxImpl;
 import pt.ipp.estg.pp.core.ContainerImpl;
 import pt.ipp.estg.pp.core.GeographicCoordinatesImpl;
+import pt.ipp.estg.pp.core.MeasurementImpl;
 import pt.ipp.estg.pp.io.ImporterImpl;
 import pt.ipp.estg.pp.pickingManagement.*;
 import pt.ipp.estg.pp.simulator.SensorSimulator;
@@ -143,6 +144,12 @@ public class Main {
                     break;
                 case 3:
                     showContainersInfo(institution);
+                    break;
+                case 4:
+                    showSpecificAidBoxInfo(scanner, institution);
+                    break;
+                case 5:
+                    SensorSimulator.generateRandomMeasurements(institution);
                     break;
                 case 0:
                     System.out.println("A voltar ao Menu Principal...");
@@ -479,6 +486,32 @@ public class Main {
             boolean added = institution.addPickingMap(pickingMap);
             if (added) {
                 System.out.println("Sucesso: " + numOfTempRoutes + " rotas gravadas num novo PickingMap!");
+                
+                // Esvaziar os contentores recolhidos pelas rotas manuais
+                System.out.println("Esvaziando contentores recolhidos...");
+                for (Route route : routesArray) {
+                    if (route == null) continue;
+                    Vehicle vehicle = route.getVehicle();
+                    if (vehicle == null) continue;
+                    
+                    AidBox[] routeBoxes = route.getRoute();
+                    if (routeBoxes != null) {
+                        for (AidBox box : routeBoxes) {
+                            if (box == null) continue;
+                            Container container = box.getContainer(vehicle.getSupplyType());
+                            if (container != null) {
+                                try {
+                                    Measurement emptyMeasurement = new MeasurementImpl(LocalDateTime.now(), 0.0);
+                                    institution.addMeasurement(emptyMeasurement, container);
+                                    System.out.println("  -> Contentor " + container.getCode() + " na AidBox " + box.getCode() + " foi recolhido e esvaziado.");
+                                } catch (Exception e) {
+                                    // Ignorar
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 numOfTempRoutes = 0;
             } else {
                 System.out.println("Erro: PickingMap idêntico já existe na instituição.");
@@ -598,6 +631,56 @@ public class Main {
         System.out.println("Distância total percorrida: " + report.getTotalDistance() + " m");
         System.out.println("-----------------------------\n");
 
+        if (generatedRoutes.length > 0) {
+            System.out.println("Detalhes das Rotas Geradas:");
+            for (int i = 0; i < generatedRoutes.length; i++) {
+                Route r = generatedRoutes[i];
+                if (r == null) continue;
+                System.out.println("  Rota " + (i + 1) + ":");
+                System.out.println("    Veículo: " + r.getVehicle().getSupplyType() + " (Cap: " + r.getVehicle().getMaxCapacity() + " kg)");
+                System.out.println("    Distância: " + String.format("%.2f", r.getTotalDistance() / 1000.0) + " km");
+                System.out.println("    Duração: " + String.format("%.2f", r.getTotalDuration() / 60.0) + " min");
+
+                AidBox[] routeBoxes = r.getRoute();
+                System.out.print("    Percurso: Base");
+                if (routeBoxes != null) {
+                    for (AidBox box : routeBoxes) {
+                        if (box != null) {
+                            System.out.print(" -> " + box.getCode());
+                        }
+                    }
+                }
+                System.out.println(" -> Base");
+            }
+            System.out.println();
+
+            // Esvaziar os contentores recolhidos pelas rotas automáticas
+            System.out.println("Esvaziando contentores recolhidos...");
+            for (Route route : generatedRoutes) {
+                if (route == null) continue;
+                Vehicle vehicle = route.getVehicle();
+                if (vehicle == null) continue;
+                
+                AidBox[] routeBoxes = route.getRoute();
+                if (routeBoxes != null) {
+                    for (AidBox box : routeBoxes) {
+                        if (box == null) continue;
+                        Container container = box.getContainer(vehicle.getSupplyType());
+                        if (container != null) {
+                            try {
+                                Measurement emptyMeasurement = new MeasurementImpl(LocalDateTime.now(), 0.0);
+                                institution.addMeasurement(emptyMeasurement, container);
+                                System.out.println("  -> Contentor " + container.getCode() + " na AidBox " + box.getCode() + " foi recolhido e esvaziado.");
+                            } catch (Exception e) {
+                                // Ignorar
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println();
+        }
+
         PickingMapImpl pickingMap = new PickingMapImpl(LocalDateTime.now(), generatedRoutes);
         try {
             institution.addPickingMap(pickingMap);
@@ -632,14 +715,37 @@ public class Main {
         try {
             importer.importData(institution);
             System.out.println("Dados importados com sucesso a partir dos ficheiros JSON!");
+            AidBox[] boxes = institution.getAidBoxes();
+            int boxesCount = (boxes == null) ? 0 : boxes.length;
+            int containersCount = 0;
+            if (boxes != null) {
+                for (AidBox b : boxes) {
+                    if (b.getContainers() != null) {
+                        containersCount += b.getContainers().length;
+                    }
+                }
+            }
+            System.out.println(" - " + boxesCount + " AidBoxes importadas.");
+            System.out.println(" - " + containersCount + " Contentores importados.");
+            System.out.println("Nota: Os veículos e as rotas temporárias não vêm dos ficheiros JSON. Deves adicioná-los através do menu.");
         } catch (Exception e) {
             System.out.println("Erro na importação: " + e.getMessage());
         }
     }
 
     private static void showContainersInfo(Institution institution) {
-        System.out.println("\n[Informação dos Contentores]");
+        System.out.println("\n[Informação da Instituição]");
+        System.out.println("Nome: " + institution.getName());
+        
         AidBox[] boxes = institution.getAidBoxes();
+        int numBoxes = (boxes == null) ? 0 : boxes.length;
+        System.out.println("Número de AidBoxes: " + numBoxes);
+        
+        Vehicle[] vehicles = institution.getVehicles();
+        int numVehicles = (vehicles == null) ? 0 : vehicles.length;
+        System.out.println("Número de Veículos: " + numVehicles);
+
+        System.out.println("\n[Informação dos Contentores]");
         if (boxes == null || boxes.length == 0) {
             System.out.println("Nenhum contentor disponível. Importe os dados primeiro ou adicione-os manualmente.");
             return;
@@ -724,5 +830,43 @@ public class Main {
             scanner.next();
         }
         return null;
+    }
+
+    private static void showSpecificAidBoxInfo(Scanner scanner, Institution institution) {
+        System.out.println("\n--- Consultar AidBox Específica ---");
+        System.out.print("Introduza o código da AidBox: ");
+        String code = scanner.next().trim();
+
+        AidBox[] boxes = institution.getAidBoxes();
+        if (boxes != null) {
+            for (AidBox box : boxes) {
+                if (box.getCode().equalsIgnoreCase(code)) {
+                    System.out.println("\nDetalhes da AidBox:");
+                    System.out.println("Código: " + box.getCode());
+                    System.out.println("Referência Local: " + box.getRefLocal());
+                    System.out.println("Zona: " + box.getZone());
+                    System.out.println("Coordenadas: Lat: " + box.getCoordinates().getLatitude() + " | Lon: " + box.getCoordinates().getLongitude());
+                    System.out.println("Contentores:");
+                    Container[] containers = box.getContainers();
+                    if (containers == null || containers.length == 0) {
+                        System.out.println("  (Nenhum contentor associado)");
+                    } else {
+                        for (Container c : containers) {
+                            System.out.print("  - Contentor " + c.getCode() + " (" + c.getType() + ") | Cap: " + c.getCapacity() + "kg");
+                            Measurement[] ms = c.getMeasurements();
+                            if (ms != null && ms.length > 0) {
+                                double actualLoad = ms[ms.length - 1].getValue();
+                                double percent = (actualLoad / c.getCapacity()) * 100;
+                                System.out.printf(" | Peso Atual: %.2f kg (%.1f%%)\n", actualLoad, percent);
+                            } else {
+                                System.out.println(" | Peso Atual: 0.00 kg (0.0%)");
+                            }
+                        }
+                    }
+                    return;
+                }
+            }
+        }
+        System.out.println("Erro: Código de AidBox inválido ou inexistente.");
     }
 }

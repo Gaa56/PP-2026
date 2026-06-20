@@ -65,6 +65,8 @@ public class MenuOptions {
         System.out.println("| Opção 1 - Adicionar AidBox             |");
         System.out.println("| Opção 2 - Adicionar Contentor a AidBox |");
         System.out.println("| Opção 3 - Listar AidBoxes/Contentores  |");
+        System.out.println("| Opção 4 - Consultar AidBox Específica  |");
+        System.out.println("| Opção 5 - Simular Medições de Sensores |");
         System.out.println("| Opção 0 - Voltar ao Menu Principal     |");
         System.out.println("|----------------------------------------|");
         System.out.print("Escolha uma opção: ");
