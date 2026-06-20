@@ -5,46 +5,86 @@ import java.time.LocalDateTime;
 
 public class ReportImpl implements Report {
 
+    private LocalDateTime date;
+    private int nonPickedContainers;
+    private int notUsedVehicles;
+    private int pickedContainers;
+    private double totalDistance;
+    private double totalDuration;
+    private int usedVehicles;
+
+    //Método construtor
+    public ReportImpl(LocalDateTime date, int nonPickedContainers, int notUsedVehicles, int pickedContainers,
+            double totalDistance, double totalDuration, int usedVehicles) {
+        this.date = date;
+        this.nonPickedContainers = nonPickedContainers;
+        this.notUsedVehicles = notUsedVehicles;
+        this.pickedContainers = pickedContainers;
+        this.totalDistance = totalDistance;
+        this.totalDuration = totalDuration;
+        this.usedVehicles = usedVehicles;
+    }
+    
+    //Método construtor com a data definida para o exato momento (overloading)
+     public ReportImpl(int nonPickedContainers, int notUsedVehicles, int pickedContainers, double totalDistance, double totalDuration, int usedVehicles) {
+        this.date = LocalDateTime.now();
+        this.nonPickedContainers = nonPickedContainers;
+        this.notUsedVehicles = notUsedVehicles;
+        this.pickedContainers = pickedContainers;
+        this.totalDistance = totalDistance;
+        this.totalDuration = totalDuration;
+        this.usedVehicles = usedVehicles;
+    }
+
     @Override
     public LocalDateTime getDate() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDate'");
+        return this.date;
     }
 
     @Override
     public int getNonPickedContainers() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNonPickedContainers'");
+        return this.nonPickedContainers;
     }
 
     @Override
     public int getNotUsedVehicles() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNotUsedVehicles'");
+        return this.notUsedVehicles;
     }
 
     @Override
     public int getPickedContainers() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPickedContainers'");
+        return this.pickedContainers;
     }
 
     @Override
     public double getTotalDistance() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalDistance'");
+        return this.totalDistance;
     }
 
     @Override
     public double getTotalDuration() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTotalDuration'");
+        return this.totalDuration;
     }
 
     @Override
     public int getUsedVehicles() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsedVehicles'");
+        return this.usedVehicles;
     }
-    // TODO: Implementar métodos da interface
+
+        @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== RELATÓRIO DO SISTEMA ===")
+          .append("\nData: ").append(this.date)
+          .append("\nDistância Total: ").append(this.totalDistance).append(" m")
+          .append("\nDuração Total: ").append(this.totalDuration).append(" s")
+          .append("\nContentores Recolhidos: ").append(this.pickedContainers)
+          .append("\nContentores não recolhidos: ").append(this.nonPickedContainers)
+          .append("\nVeículos usados: ").append(this.usedVehicles)
+          .append("\nVeículos não usados: ").append(this.notUsedVehicles)
+          .append("\n============================");
+          
+        return sb.toString();
+    }
+
 }
