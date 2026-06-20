@@ -51,8 +51,10 @@ public class ContainerImpl implements Container {
      * Expande o array automaticamente caso o limite inicial seja atingido.
      *
      * @param measurement A medição a ser adicionada.
-     * @return true se inserido com sucesso, false se já existir uma medição com igual valor na mesma data.
-     * @throws MeasurementException se a medição for inválida de acordo com as regras.
+     * @return true se inserido com sucesso, false se já existir uma medição com
+     *         igual valor na mesma data.
+     * @throws MeasurementException se a medição for inválida de acordo com as
+     *                              regras.
      */
     @Override
     public boolean addMeasurement(Measurement measurement) throws MeasurementException {
@@ -153,9 +155,9 @@ public class ContainerImpl implements Container {
         for (int i = 0; i < this.measurementCount; i++) {
             if (this.measurements[i].getDate().toLocalDate().equals(date)) {
                 count++;
-            }            
+            }
         }
-        
+
         Measurement[] measurementByDate = new Measurement[count];
         int tempVar = 0;
 
@@ -190,10 +192,10 @@ public class ContainerImpl implements Container {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Container [Código: ").append(this.code)
-          .append(", Tipo: ").append(this.type)
-          .append(", Capacidade: ").append(this.capacity).append(" Kg")
-          .append(", Total de Medições: ").append(this.measurementCount)
-          .append("]");
+                .append(", Tipo: ").append(this.type)
+                .append(", Capacidade: ").append(this.capacity).append(" Kg")
+                .append(", Total de Medições: ").append(this.measurementCount)
+                .append("]");
         return sb.toString();
     }
 
