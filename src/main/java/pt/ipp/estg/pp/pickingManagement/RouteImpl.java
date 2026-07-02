@@ -131,6 +131,24 @@ public class RouteImpl implements Route {
     }
 
     /**
+     * Define a distância total da rota.
+     *
+     * @param totalDistance a distância em metros
+     */
+    public void setTotalDistance(double totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+    /**
+     * Define a duração total da rota.
+     *
+     * @param totalDuration a duração em segundos
+     */
+    public void setTotalDuration(double totalDuration) {
+        this.totalDuration = totalDuration;
+    }
+
+    /**
      * Retorna o veículo associado a esta rota.
      *
      * @return o veículo da rota

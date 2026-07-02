@@ -161,11 +161,11 @@ public class ImporterImpl implements Importer {
                         double duration = toDouble(toMap.get("duration"));
 
                         if (toName.equalsIgnoreCase("Base")) {
-                            // Regista a distância da Base até a esta AidBox de origem
+                            // Regista a distância e duração da Base até a esta AidBox de origem
                             AidBox origin = findAidBox(registeredBoxes, fromCode);
                             if (origin != null) {
                                 if (institution instanceof pt.ipp.estg.pp.core.InstitutionImpl) {
-                                    ((pt.ipp.estg.pp.core.InstitutionImpl) institution).addDistance(origin, distance);
+                                    ((pt.ipp.estg.pp.core.InstitutionImpl) institution).addDistance(origin, distance, duration);
                                 }
                             }
                         } else {
@@ -187,7 +187,7 @@ public class ImporterImpl implements Importer {
                     if (destination != null) {
                         if (fromCode.equalsIgnoreCase("Base")) {
                             if (institution instanceof pt.ipp.estg.pp.core.InstitutionImpl) {
-                                ((pt.ipp.estg.pp.core.InstitutionImpl) institution).addDistance(destination, distance);
+                                ((pt.ipp.estg.pp.core.InstitutionImpl) institution).addDistance(destination, distance, duration);
                             }
                         } else {
                             AidBox origin = findAidBox(registeredBoxes, fromCode);

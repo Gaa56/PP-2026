@@ -1,2 +1,7 @@
 *.class
 *.lst
+temp-jdk/
+bin/
+target/
+.idea/
+.vscode/

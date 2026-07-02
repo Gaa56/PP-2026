@@ -71,6 +71,35 @@ public class ReportImpl implements Report {
         return this.usedVehicles;
     }
 
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public void setNonPickedContainers(int nonPickedContainers) {
+        this.nonPickedContainers = nonPickedContainers;
+    }
+
+    public void setNotUsedVehicles(int notUsedVehicles) {
+        this.notUsedVehicles = notUsedVehicles;
+    }
+
+    public void setPickedContainers(int pickedContainers) {
+        this.pickedContainers = pickedContainers;
+    }
+
+    public void setTotalDistance(double totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+    public void setTotalDuration(double totalDuration) {
+        this.totalDuration = totalDuration;
+    }
+
+    public void setUsedVehicles(int usedVehicles) {
+        this.usedVehicles = usedVehicles;
+    }
+
+
         @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -8,10 +8,6 @@ public class RouteValidatorImpl implements RouteValidator {
 
     @Override
     public boolean validate(Route route, AidBox aidBox) {
-        if (route.containsAidBox(aidBox)) {
-            return true;
-        } else {
-            return false;
-        }
+        return route != null && aidBox != null && !route.containsAidBox(aidBox);
     }
 }

@@ -38,6 +38,7 @@ public class InstitutionImpl implements Institution {
 
     private AidBox[] connectedBoxes;
     private double[] distances;
+    private double[] durations;
     private int connectionCount;
 
     private static final int DEFAULT_SIZE = 20;
@@ -58,6 +59,7 @@ public class InstitutionImpl implements Institution {
 
         this.connectedBoxes = new AidBox[DEFAULT_SIZE];
         this.distances = new double[DEFAULT_SIZE];
+        this.durations = new double[DEFAULT_SIZE];
         this.connectionCount = 0;
     }
 
@@ -398,17 +400,51 @@ public class InstitutionImpl implements Institution {
      * @param distance    distância em metros
      */
     public void addDistance(AidBox destination, double distance) {
+        addDistance(destination, distance, 0.0);
+    }
+
+    /**
+     * Regista a distância e duração da instituição até a uma AidBox específica.
+     *
+     * @param destination AidBox de destino
+     * @param distance    distância em metros
+     * @param duration    duração em segundos
+     */
+    public void addDistance(AidBox destination, double distance, double duration) {
         if (connectionCount == connectedBoxes.length) {
             AidBox[] newBoxes = new AidBox[connectedBoxes.length * 2];
             double[] newDistances = new double[distances.length * 2];
+            double[] newDurations = new double[durations.length * 2];
             System.arraycopy(connectedBoxes, 0, newBoxes, 0, connectionCount);
             System.arraycopy(distances, 0, newDistances, 0, connectionCount);
+            System.arraycopy(durations, 0, newDurations, 0, connectionCount);
             connectedBoxes = newBoxes;
             distances = newDistances;
+            durations = newDurations;
         }
         connectedBoxes[connectionCount] = destination;
         distances[connectionCount] = distance;
+        durations[connectionCount] = duration;
         connectionCount++;
+    }
+
+    /**
+     * Devolve a duração estimada em segundos da instituição até a uma AidBox específica.
+     *
+     * @param aidBox a AidBox de destino
+     * @return a duração em segundos
+     * @throws AidBoxException se a duração não estiver registada
+     */
+    public double getDuration(AidBox aidBox) throws AidBoxException {
+        if (aidBox == null) {
+            throw new AidBoxException("AidBox não pode ser nula");
+        }
+        for (int i = 0; i < connectionCount; i++) {
+            if (connectedBoxes[i].equals(aidBox)) {
+                return durations[i];
+            }
+        }
+        throw new AidBoxException("Duração até à AidBox com código " + aidBox.getCode() + " não encontrada");
     }
 
     /**

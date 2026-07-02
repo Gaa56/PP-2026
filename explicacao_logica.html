@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explicação simples e interativa sobre a lógica do projeto PP-2026.">
+    <title>PP-2026 | Guia de Lógica do Sistema</title>
+    
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Design System / Color Palette */
+        :root {
+            --bg-base: hsl(222, 47%, 4%);
+            --bg-surface: hsl(223, 47%, 9%);
+            --bg-card: hsl(223, 45%, 14%);
+            --primary: hsl(263, 90%, 65%);
+            --primary-glow: hsla(263, 90%, 65%, 0.25);
+            --secondary: hsl(190, 95%, 45%);
+            --secondary-glow: hsla(190, 95%, 45%, 0.2);
+            --accent: hsl(325, 85%, 55%);
+            --text-main: hsl(210, 38%, 95%);
+            --text-muted: hsl(215, 20%, 70%);
+            --border: hsl(223, 30%, 18%);
+            --border-hover: hsl(263, 50%, 40%);
+            --success: hsl(145, 80%, 45%);
+            --font-main: 'Outfit', sans-serif;
+            --shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header design */
+        header {
+            padding: 50px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, hsl(263, 95%, 10%) 0%, var(--bg-base) 100%);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-main) 40%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Main Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-surface);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Tab Contents */
+        .tab-content {
+            display: none;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Key Concept Layout: Contains block layout representing parent-child containing */
+        .containment-tree {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .tree-level {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .tree-level:hover {
+            border-color: var(--primary);
+        }
+
+        .tree-level.level-1 { border-left: 5px solid var(--primary); }
+        .tree-level.level-2 { border-left: 5px solid var(--secondary); margin-left: 30px; }
+        .tree-level.level-3 { border-left: 5px solid var(--accent); margin-left: 60px; }
+        .tree-level.level-4 { border-left: 5px solid var(--success); margin-left: 90px; }
+
+        .tree-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .tree-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Panel Layout */
+        .grid-panel {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .info-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.25s, border-color 0.25s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--border-hover);
+        }
+
+        .info-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bullet-list li {
+            font-size: 0.9rem;
+            padding-left: 18px;
+            position: relative;
+        }
+
+        .bullet-list li::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Flow steps visual design */
+        .step-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .step-badge {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 5px 15px var(--primary-glow);
+        }
+
+        .step-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .step-info p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, hsla(263, 90%, 65%, 0.1) 0%, hsla(190, 95%, 50%, 0.1) 100%);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .highlight-box h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .highlight-box p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Como Funciona o Nosso Sistema?</h1>
+            <p>Um guia simplificado para entender a lógica das entidades e como os donativos são simulados e recolhidos no projeto.</p>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('hierarchy')">1. A Estrutura de Dados</button>
+            <button class="tab-btn" onclick="switchTab('logistics')">2. Veículos e Rotas</button>
+            <button class="tab-btn" onclick="switchTab('workflow')">3. O Fluxo de Recolha</button>
+        </div>
+
+        <!-- TAB 1: DATA HIERARCHY -->
+        <div id="tab-hierarchy" class="tab-content active">
+            
+            <div class="highlight-box">
+                <h2>Como a informação está organizada (Hierarquia)</h2>
+                <p>No sistema, os dados físicos de armazenamento estão organizados de forma hierárquica (uma coisa contém a outra). Veja o esquema de blocos interconectados abaixo:</p>
+            </div>
+
+            <div class="containment-tree">
+                
+                <div class="tree-level level-1">
+                    <div class="tree-title">🏢 Institution (A Instituição Raiz)</div>
+                    <div class="tree-desc">É o cérebro central. Ela sabe onde estão todas as caixas de ajuda, todos os veículos disponíveis e guarda o histórico de recolhas.</div>
+                </div>
+
+                <div class="tree-level level-2">
+                    <div class="tree-title">📍 AidBox (A Caixa de Ajuda / Suprimentos)</div>
+                    <div class="tree-desc">Representa um ponto físico na rua (com coordenadas GPS). Cada caixa de ajuda serve para recolher bens e contém vários contentores.</div>
+                </div>
+
+                <div class="tree-level level-3">
+                    <div class="tree-title">📥 Container (O Contentor)</div>
+                    <div class="tree-desc">Fica dentro da caixa de ajuda. Cada contentor guarda apenas <strong>um tipo de item</strong> (Roupas, Medicamentos, Comida Perecível, etc.) e tem uma capacidade máxima em Kg.</div>
+                </div>
+
+                <div class="tree-level level-4">
+                    <div class="tree-title">⚖️ Measurement (A Medição de Peso)</div>
+                    <div class="tree-desc">Fica guardada dentro do contentor. É um registo feito pelos sensores que diz: <em>"Na data X, o contentor estava com Y Kg de peso"</em>.</div>
+                </div>
+
+            </div>
+
+            <div class="grid-panel" style="margin-top: 40px;">
+                <div class="info-card">
+                    <h3>🔍 Detalhe da Relação</h3>
+                    <p>Pense nesta analogia simples do mundo real:</p>
+                    <ul class="bullet-list">
+                        <li>A <strong>Câmara Municipal</strong> (Institution) controla os pontos de recolha na cidade.</li>
+                        <li>Na Praça Central está instalado um <strong>Eco-Ponto de Solidariedade</strong> (AidBox).</li>
+                        <li>Esse eco-ponto tem uma <strong>divisão para Roupas</strong> (Container).</li>
+                        <li>De hora a hora, o sensor envia um sinal a indicar que a <strong>roupa pesa 45 Kg</strong> (Measurement).</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>💡 SensorSimulator (O Simulador)</h3>
+                    <p>Como não temos sensores reais na rua, criamos o <strong>SensorSimulator</strong>. O papel dele é:</p>
+                    <ul class="bullet-list">
+                        <li>Gerar pesos aleatórios para os contentores.</li>
+                        <li>Respeitar sempre os limites (o peso gerado tem de estar entre 0 Kg e a capacidade máxima do contentor).</li>
+                        <li>Permitir-nos simular que a população está a encher as caixas ao longo dos dias.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 2: LOGISTICS & ROUTES -->
+        <div id="tab-logistics" class="tab-content">
+            
+            <div class="highlight-box">
+                <h2>Como se processa a Recolha Logística</h2>
+                <p>Para recolher os bens que estão cheios, a Instituição utiliza Veículos e planeia Rotas. Veja abaixo como estas duas partes comunicam.</p>
+            </div>
+
+            <div class="grid-panel">
+                
+                <div class="info-card">
+                    <h3>🚚 Os Veículos (Vehicles)</h3>
+                    <p>São as carrinhas/caminhões que vão recolher os bens. Têm regras estritas:</p>
+                    <ul class="bullet-list">
+                        <li><strong>Compatibilidade:</strong> Um veículo só pode carregar um tipo de bem de cada vez. Um veículo de vestuário não pode misturar medicamentos na mesma viagem.</li>
+                        <li><strong>Estado:</strong> Podem ser ativados (Active) ou desativados (Disable) pela instituição.</li>
+                        <li><strong>Refrigerados (RefrigeratedVehicle):</strong> São veículos especiais para alimentos perecíveis. Têm controlo de temperatura e um limite de quilómetros que podem percorrer com carga para garantir a frescura dos alimentos.</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>🗺️ As Rotas (Routes)</h3>
+                    <p>Uma rota é o plano de viagem desenhado para um veículo específico:</p>
+                    <ul class="bullet-list">
+                        <li><strong>Circuito Fechado:</strong> A rota começa sempre na <strong>Base</strong>, vai a uma sequência ordenada de <strong>AidBoxes</strong> recolher os contentores e volta sempre à <strong>Base</strong>.</li>
+                        <li><strong>Métricas:</strong> Guarda a distância total percorrida (em metros) e a duração estimada da viagem (em segundos).</li>
+                        <li><strong>Strategy:</strong> É o algoritmo que decide que caixas de ajuda devem ser visitadas por que veículo para otimizar os recursos.</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>🗓️ PickingMap (Mapa de Picking)</h3>
+                    <p>É o planeamento completo para um determinado dia. Agrupa todas as rotas que vão ser efetuadas em simultâneo por vários veículos.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>📊 Report (Relatório de Eficácia)</h3>
+                    <p>Depois de geradas as rotas, o sistema preenche um relatório contendo as métricas de desempenho:</p>
+                    <ul class="bullet-list">
+                        <li>Quantos contentores foram efetivamente recolhidos e quantos ficaram cheios por recolher.</li>
+                        <li>Quantos veículos saíram à rua e quantos ficaram estacionados na garagem (não usados).</li>
+                        <li>A soma de todos os quilómetros percorridos e horas de condução.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TAB 3: WORKFLOW -->
+        <div id="tab-workflow" class="tab-content">
+            
+            <div class="highlight-box">
+                <h2>O Fluxo de Execução do Programa</h2>
+                <p>Veja a ordem cronológica em que as classes correm no projeto:</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-badge">1</div>
+                <div class="step-info">
+                    <h3>Importação dos Ficheiros JSON</h3>
+                    <p>O <code>ImporterImpl</code> lê os ficheiros de configuração (AidBoxes e Distâncias) e cria as entidades na <code>Institution</code>, estabelecendo a rede rodoviária inicial.</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-badge">2</div>
+                <div class="step-info">
+                    <h3>Simulação da População</h3>
+                    <p>O <code>SensorSimulator</code> insere leituras de peso nos contentores para simular que foram depositados donativos.</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-badge">3</div>
+                <div class="step-info">
+                    <h3>Análise de Lotação</h3>
+                    <p>A estratégia (<code>Strategy</code>) analisa os contentores. Se um contentor tiver mais de <strong>80% do seu limite de carga</strong>, a caixa de ajuda onde ele se encontra entra para a lista de paragens urgentes.</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-badge">4</div>
+                <div class="step-info">
+                    <h3>Criação e Validação de Rotas</h3>
+                    <p>O veículo é atribuído. O <code>RouteValidator</code> garante que a rota cumpre todos os limites (capacidade do veículo e quilometragem permitida com carga).</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-badge">5</div>
+                <div class="step-info">
+                    <h3>Motor de Geração de Rotas e Relatório</h3>
+                    <p>O <code>RouteGenerator</code> calcula a distância e duração precisas de todas as viagens de ida-e-volta em relação à Base e preenche as estatísticas finais no <code>Report</code>.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Remove active classes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to selected button and tab content
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
