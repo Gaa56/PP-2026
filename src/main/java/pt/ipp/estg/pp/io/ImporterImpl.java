@@ -40,15 +40,38 @@ public class ImporterImpl implements Importer {
      * @param distanceFile caminho para o ficheiro de distâncias e durações
      */
     public ImporterImpl(String aidBoxesFile, String distanceFile) {
-        this.aidBoxesFile = aidBoxesFile;
-        this.distanceFile = distanceFile;
+        this.aidBoxesFile = findFile(aidBoxesFile);
+        this.distanceFile = findFile(distanceFile);
     }
 
     /**
      * Construtor por omissão. Assume os ficheiros no diretório raiz do projeto.
      */
     public ImporterImpl() {
-        this("aidboxes.json", "distances.json");
+        this("AidBoxes.json", "Distances.json");
+    }
+
+    private static String findFile(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        java.io.File file = new java.io.File(filename);
+        if (file.exists()) {
+            return filename;
+        }
+        java.io.File subFile = new java.io.File("PP-2026" + java.io.File.separator + filename);
+        if (subFile.exists()) {
+            return subFile.getPath();
+        }
+        java.io.File lowerFile = new java.io.File(filename.toLowerCase());
+        if (lowerFile.exists()) {
+            return lowerFile.getPath();
+        }
+        java.io.File subLowerFile = new java.io.File("PP-2026" + java.io.File.separator + filename.toLowerCase());
+        if (subLowerFile.exists()) {
+            return subLowerFile.getPath();
+        }
+        return filename;
     }
 
     @Override
