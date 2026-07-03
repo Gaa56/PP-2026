@@ -10,6 +10,7 @@ import com.estg.core.AidBox;
 import com.estg.core.ItemType;
 import com.estg.pickingManagement.Vehicle;
 import pt.ipp.estg.pp.core.InstitutionImpl;
+import com.estg.core.exceptions.AidBoxException;
 
 import java.time.LocalDateTime;
 
@@ -125,7 +126,7 @@ public class RouteGeneratorImpl implements RouteGenerator {
             
             // Distância da última caixa de regresso à Base
             distance += institution.getDistance(path[path.length - 1]);
-        } catch (Exception e) {
+        } catch (AidBoxException e) {
             // Se falhar alguma ligação, retorna o acumulado
         }
         return distance;
@@ -155,7 +156,7 @@ public class RouteGeneratorImpl implements RouteGenerator {
             if (institution instanceof InstitutionImpl) {
                 duration += ((InstitutionImpl) institution).getDuration(path[path.length - 1]);
             }
-        } catch (Exception e) {
+        } catch (AidBoxException e) {
             // Se falhar alguma ligação, retorna o acumulado
         }
         return duration;
