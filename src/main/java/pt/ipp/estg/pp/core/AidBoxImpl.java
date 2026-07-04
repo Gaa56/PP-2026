@@ -72,9 +72,11 @@ public class AidBoxImpl implements AidBox {
         double[] newDist = new double[distances.length * 2];
         double[] newDur = new double[durations.length * 2];
 
-        System.arraycopy(connectedBoxes, 0, newBoxes, 0, connectionCount);
-        System.arraycopy(distances, 0, newDist, 0, connectionCount);
-        System.arraycopy(durations, 0, newDur, 0, connectionCount);
+        for (int i = 0; i < connectionCount; i++) {
+            newBoxes[i] = connectedBoxes[i];
+            newDist[i] = distances[i];
+            newDur[i] = durations[i];
+        }
 
         connectedBoxes = newBoxes;
         distances = newDist;
@@ -161,7 +163,9 @@ public class AidBoxImpl implements AidBox {
     @Override
     public Container[] getContainers() {
         Container[] result = new Container[containerCount];
-        System.arraycopy(containers, 0, result, 0, containerCount);
+        for (int i = 0; i < containerCount; i++) {
+            result[i] = containers[i];
+        }
         return result;
     }
 
@@ -277,13 +281,19 @@ public class AidBoxImpl implements AidBox {
         clone.coordinates = coordinates;
 
         clone.connectedBoxes = new AidBox[connectedBoxes.length];
-        System.arraycopy(connectedBoxes, 0, clone.connectedBoxes, 0, connectionCount);
+        for (int i = 0; i < connectionCount; i++) {
+            clone.connectedBoxes[i] = connectedBoxes[i];
+        }
 
         clone.distances = new double[distances.length];
-        System.arraycopy(distances, 0, clone.distances, 0, connectionCount);
+        for (int i = 0; i < connectionCount; i++) {
+            clone.distances[i] = distances[i];
+        }
 
         clone.durations = new double[durations.length];
-        System.arraycopy(durations, 0, clone.durations, 0, connectionCount);
+        for (int i = 0; i < connectionCount; i++) {
+            clone.durations[i] = durations[i];
+        }
 
         clone.connectionCount = connectionCount;
 

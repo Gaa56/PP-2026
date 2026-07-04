@@ -111,7 +111,9 @@ public class InstitutionImpl implements Institution {
         // Expandir o array se necessário
         if (numOfAidBoxes == aidBoxes.length) {
             AidBox[] newAidBoxes = new AidBox[aidBoxes.length * 2];
-            System.arraycopy(aidBoxes, 0, newAidBoxes, 0, numOfAidBoxes);
+            for (int i = 0; i < numOfAidBoxes; i++) {
+                newAidBoxes[i] = aidBoxes[i];
+            }
             aidBoxes = newAidBoxes;
         }
 
@@ -189,7 +191,9 @@ public class InstitutionImpl implements Institution {
         // Expandir o array se necessário
         if (numOfPickingMaps == pickingMaps.length) {
             PickingMap[] newPickingMaps = new PickingMap[pickingMaps.length * 2];
-            System.arraycopy(pickingMaps, 0, newPickingMaps, 0, numOfPickingMaps);
+            for (int i = 0; i < numOfPickingMaps; i++) {
+                newPickingMaps[i] = pickingMaps[i];
+            }
             pickingMaps = newPickingMaps;
         }
 
@@ -222,7 +226,9 @@ public class InstitutionImpl implements Institution {
         // Expandir o array se necessário
         if (numOfVehicles == vehicles.length) {
             Vehicle[] newVehicles = new Vehicle[vehicles.length * 2];
-            System.arraycopy(vehicles, 0, newVehicles, 0, numOfVehicles);
+            for (int i = 0; i < numOfVehicles; i++) {
+                newVehicles[i] = vehicles[i];
+            }
             vehicles = newVehicles;
         }
 
@@ -310,7 +316,9 @@ public class InstitutionImpl implements Institution {
     @Override
     public AidBox[] getAidBoxes() {
         AidBox[] result = new AidBox[numOfAidBoxes];
-        System.arraycopy(aidBoxes, 0, result, 0, numOfAidBoxes);
+        for (int i = 0; i < numOfAidBoxes; i++) {
+            result[i] = aidBoxes[i];
+        }
         return result;
     }
 
@@ -415,9 +423,11 @@ public class InstitutionImpl implements Institution {
             AidBox[] newBoxes = new AidBox[connectedBoxes.length * 2];
             double[] newDistances = new double[distances.length * 2];
             double[] newDurations = new double[durations.length * 2];
-            System.arraycopy(connectedBoxes, 0, newBoxes, 0, connectionCount);
-            System.arraycopy(distances, 0, newDistances, 0, connectionCount);
-            System.arraycopy(durations, 0, newDurations, 0, connectionCount);
+            for (int i = 0; i < connectionCount; i++) {
+                newBoxes[i] = connectedBoxes[i];
+                newDistances[i] = distances[i];
+                newDurations[i] = durations[i];
+            }
             connectedBoxes = newBoxes;
             distances = newDistances;
             durations = newDurations;
@@ -455,7 +465,9 @@ public class InstitutionImpl implements Institution {
     @Override
     public PickingMap[] getPickingMaps() {
         PickingMap[] result = new PickingMap[numOfPickingMaps];
-        System.arraycopy(pickingMaps, 0, result, 0, numOfPickingMaps);
+        for (int i = 0; i < numOfPickingMaps; i++) {
+            result[i] = pickingMaps[i];
+        }
         return result;
     }
 
@@ -503,7 +515,9 @@ public class InstitutionImpl implements Institution {
     @Override
     public Vehicle[] getVehicles() {
         Vehicle[] result = new Vehicle[numOfVehicles];
-        System.arraycopy(vehicles, 0, result, 0, numOfVehicles);
+        for (int i = 0; i < numOfVehicles; i++) {
+            result[i] = vehicles[i];
+        }
         return result;
     }
 }

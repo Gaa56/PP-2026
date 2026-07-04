@@ -37,7 +37,8 @@ public class RouteGeneratorImpl implements RouteGenerator {
         // Contabilizar o total de contentores no sistema
         AidBox[] allAidBoxes = institution.getAidBoxes();
         int totalContainers = 0;
-        for (AidBox box : allAidBoxes) {
+        for (int i = 0; i < allAidBoxes.length; i++) {
+            AidBox box = allAidBoxes[i];
             if (box.getContainers() != null) {
                 totalContainers += box.getContainers().length;
             }
@@ -45,7 +46,8 @@ public class RouteGeneratorImpl implements RouteGenerator {
 
         // 2. Calcular distância/duração de cada rota e atualizar os seus campos internos
         if (routes != null) {
-            for (Route r : routes) {
+            for (int i = 0; i < routes.length; i++) {
+                Route r = routes[i];
                 if (r instanceof RouteImpl) {
                     RouteImpl routeImpl = (RouteImpl) r;
                     
@@ -60,7 +62,9 @@ public class RouteGeneratorImpl implements RouteGenerator {
 
                     // Contabilizar contentores recolhidos por esta rota
                     ItemType supplyType = r.getVehicle().getSupplyType();
-                    for (AidBox box : r.getRoute()) {
+                    AidBox[] routeBoxes = r.getRoute();
+                    for (int j = 0; j < routeBoxes.length; j++) {
+                        AidBox box = routeBoxes[j];
                         if (box.getContainer(supplyType) != null) {
                             pickedContainersCount++;
                         }
@@ -72,7 +76,8 @@ public class RouteGeneratorImpl implements RouteGenerator {
         // 3. Contabilizar estatísticas dos veículos
         Vehicle[] allVehicles = institution.getVehicles();
         int totalActiveVehicles = 0;
-        for (Vehicle v : allVehicles) {
+        for (int i = 0; i < allVehicles.length; i++) {
+            Vehicle v = allVehicles[i];
             if (v instanceof VehicleImpl) {
                 if (((VehicleImpl) v).getState() == State.ACTIVE) {
                     totalActiveVehicles++;
@@ -82,7 +87,8 @@ public class RouteGeneratorImpl implements RouteGenerator {
 
         int usedVehiclesCount = 0;
         if (routes != null) {
-            for (Route r : routes) {
+            for (int i = 0; i < routes.length; i++) {
+                Route r = routes[i];
                 if (r.getRoute() != null && r.getRoute().length > 0) {
                     usedVehiclesCount++;
                 }
